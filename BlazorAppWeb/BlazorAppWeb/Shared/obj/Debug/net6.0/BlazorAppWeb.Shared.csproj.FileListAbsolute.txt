@@ -1,0 +1,11 @@
+C:\Users\dell\Downloads\BlazorAppWeb (1)\BlazorAppWeb\BlazorAppWeb\Shared\bin\Debug\net6.0\BlazorAppWeb.Shared.deps.json
+C:\Users\dell\Downloads\BlazorAppWeb (1)\BlazorAppWeb\BlazorAppWeb\Shared\bin\Debug\net6.0\BlazorAppWeb.Shared.dll
+C:\Users\dell\Downloads\BlazorAppWeb (1)\BlazorAppWeb\BlazorAppWeb\Shared\bin\Debug\net6.0\BlazorAppWeb.Shared.pdb
+C:\Users\dell\Downloads\BlazorAppWeb (1)\BlazorAppWeb\BlazorAppWeb\Shared\obj\Debug\net6.0\BlazorAppWeb.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dell\Downloads\BlazorAppWeb (1)\BlazorAppWeb\BlazorAppWeb\Shared\obj\Debug\net6.0\BlazorAppWeb.Shared.AssemblyInfoInputs.cache
+C:\Users\dell\Downloads\BlazorAppWeb (1)\BlazorAppWeb\BlazorAppWeb\Shared\obj\Debug\net6.0\BlazorAppWeb.Shared.AssemblyInfo.cs
+C:\Users\dell\Downloads\BlazorAppWeb (1)\BlazorAppWeb\BlazorAppWeb\Shared\obj\Debug\net6.0\BlazorAppWeb.Shared.csproj.CoreCompileInputs.cache
+C:\Users\dell\Downloads\BlazorAppWeb (1)\BlazorAppWeb\BlazorAppWeb\Shared\obj\Debug\net6.0\BlazorAppWeb.Shared.dll
+C:\Users\dell\Downloads\BlazorAppWeb (1)\BlazorAppWeb\BlazorAppWeb\Shared\obj\Debug\net6.0\refint\BlazorAppWeb.Shared.dll
+C:\Users\dell\Downloads\BlazorAppWeb (1)\BlazorAppWeb\BlazorAppWeb\Shared\obj\Debug\net6.0\BlazorAppWeb.Shared.pdb
+C:\Users\dell\Downloads\BlazorAppWeb (1)\BlazorAppWeb\BlazorAppWeb\Shared\obj\Debug\net6.0\ref\BlazorAppWeb.Shared.dll

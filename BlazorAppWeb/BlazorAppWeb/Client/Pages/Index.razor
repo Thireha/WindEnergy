@@ -1,0 +1,260 @@
+﻿@page "/"
+@inject HttpClient _httpClient
+@using Newtonsoft.Json
+@if (allData != null && Documents != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                @foreach (var item in columnNames)
+                {
+                    <th>
+                        @item
+                        <div class="custom-dropdown">
+                            <button class="dropdown-button" id="dropdown-button"><i class="fa fa-sort"></i></button>
+                            <ul class="dropdown-content" id="dropdown-content">
+                                <li class="dropdown-item" @onclick="()=>SortBy(SortOrder.Ascending,item)">Ascending</li>
+                                <li class="dropdown-item" @onclick="()=>SortBy(SortOrder.Descending,item)">Descending</li>
+                            </ul>
+                        </div>
+                    </th>
+
+                }
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in paginatedData)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Docty</td>
+                    <td>@item.Lang</td>
+                    <td>@item.Owner</td>
+                    <td>@item.Docdt.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button @onclick="PreviousPage" disabled="@isFirstPage">Previous</button>
+    <button @onclick="NextPage" disabled="@isLastPage">Next</button>
+}
+else
+{
+    <p><em>Loading...</em></p>
+}
+<style>
+
+
+    th {
+        width: 20%;
+    }
+
+    .custom-dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-button {
+        background-color: #fff;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        cursor: pointer !important;
+        margin-left: 50px;
+        margin-top: 10px;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 0 0 4px 4px;
+        list-style: none;
+        padding: 0;
+    }
+
+    .dropdown-item {
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+
+    .custom-dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+</style>
+@code
+{
+
+    //pagination
+    private void LoadPage()
+    {
+        int startIndex = (pageNumber - 1) * pageSize;
+        paginatedData = Documents.Skip(startIndex).Take(pageSize).ToList();
+        isFirstPage = pageNumber == 1;
+        isLastPage = pageNumber * pageSize >= Documents.Count;
+    }
+
+    private void PreviousPage()
+    {
+        if (!isFirstPage)
+        {
+            pageNumber--;
+            LoadPage();
+        }
+    }
+
+    private void NextPage()
+    {
+        if (!isLastPage)
+        {
+            pageNumber++;
+            LoadPage();
+        }
+    }
+
+
+    //sorting
+    private string selectedSortOrder = ""; // Set a default value
+
+
+    private enum SortOrder
+    {
+        Ascending,
+        Descending
+    }
+    private void SortBy(SortOrder sortOrder, string columnName)
+    {
+        // Implement your sorting logic based on the selected sort order
+        // You can use LINQ to sort the 'documentKeyValues' list her
+
+        if (sortOrder == SortOrder.Ascending)
+        {
+            paginatedData = paginatedData.OrderBy(kv => GetColumnValue(kv, columnName)).ToList();
+        }
+        else
+        {
+            paginatedData = paginatedData.OrderByDescending(kv => GetColumnValue(kv, columnName)).ToList();
+        }
+        //selectedSortOrder = sortOrder;
+    }
+    private object GetColumnValue(DocumentModel doc, string columnName)
+    {
+        // Use reflection to get the value of the specified property/column
+        var prop = typeof(DocumentModel).GetProperty(columnName);
+
+        if (prop != null)
+        {
+            return prop.GetValue(doc);
+        }
+
+        return null;
+    }
+
+
+
+    public string[] columnNames { get; set; } = new string[] { "Id", "Docty", "Lang", "Owner", "Docdt" };
+
+    public ResponseModel? allData { get; set; }
+    public List<DocumentModel>? Documents { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        allData = await _httpClient.GetFromJsonAsync<ResponseModel>("http://localhost:5242/api/Home/Getendpoint1DataAsync");
+        if (allData != null)
+        {
+            Documents = allData.Documents.Values.ToList();
+            LoadPage();
+        }
+        else
+        {
+            throw new Exception(allData.ErrorMessage);
+        }
+    }
+    public class ResponseModel
+    {
+        public Dictionary<string, DocumentModel> Documents { get; set; }
+        public string ErrorMessage;
+
+    }
+    public class DocumentModel
+    {
+        public string Id { get; set; }
+        public DateTime LastModifiedDate { get; set; }
+        public Dictionary<string, AuthorModel> Authors { get; set; }
+        public string Count { get; set; }
+        public string CountKey { get; set; }
+        public Dictionary<string, DocnaModel> Docna { get; set; }
+        public string Docty { get; set; }
+        public string DoctyKey { get; set; }
+        public string Owner { get; set; }
+        public string Seccl { get; set; }
+        public string Lang { get; set; }
+        public string LangKey { get; set; }
+        //[JsonProperty("entityids")]
+        //public EntityIdsModel EntityIds { get; set; }
+        public string Repnb { get; set; }
+        public DateTime Docdt { get; set; }
+        public DateTime DateStored { get; set; }
+        public string Volnb { get; set; }
+        public string MajDocty { get; set; }
+        public string MajDoctyKey { get; set; }
+        //public Dictionary<string, AbstractsModel> Abstracts { get; set; }
+        public string DisplayTitle { get; set; }
+        public DateTime DisclosureDate { get; set; }
+        public string DisclosureType { get; set; }
+        public string PdfUrl { get; set; }
+        public string TxtUrl { get; set; }
+        public string ListingRelativeUrl { get; set; }
+        public string UrlFriendlyTitle { get; set; }
+        public string NewUrl { get; set; }
+        public DateTime ExtPubDate { get; set; }
+        public string DisclStat { get; set; }
+        public string TopicV3 { get; set; }
+        public string DocmId { get; set; }
+        public string ChronicalDocmId { get; set; }
+        public DateTime PublishtoExtwebDt { get; set; }
+        public string VersionTyp { get; set; }
+        public string VersionTypKey { get; set; }
+        public string Guid { get; set; }
+        public Dictionary<string, AuthorKeysModel> AuthorKeys { get; set; }
+        public string AvailableIn { get; set; }
+        public List<string> FullAvailableIn { get; set; }
+        public string Url { get; set; }
+    }
+
+    public class AuthorModel
+    {
+        public string Author { get; set; }
+    }
+
+    public class DocnaModel
+    {
+        public string Docna { get; set; }
+    }
+
+    public class EntityIdsModel
+    {
+        public string EntityId { get; set; }
+    }
+
+    public class AbstractsModel
+    {
+
+        public string Cdata { get; set; }
+    }
+
+    public class AuthorKeysModel
+    {
+        public string AuthorKey { get; set; }
+    }
+
+    //private List<DocumentModel> allData = new List<DocumentModel>(); // Load all data from the response
+    private List<DocumentModel> paginatedData = new List<DocumentModel>();
+    private int pageNumber = 1;
+    private int pageSize = 10;
+    private bool isFirstPage = true;
+    private bool isLastPage = false;
+}
